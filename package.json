@@ -1,0 +1,24 @@
+{
+  "name": "wallpaper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "wallpaper.js",
+  "dependencies": {
+    "request": "^2.81.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node wallpaper.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lewjt/Wallpapers.git"
+  },
+  "author": "Lewis Turner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lewjt/Wallpapers/issues"
+  },
+  "homepage": "https://github.com/lewjt/Wallpapers#readme"
+}
