@@ -8,7 +8,7 @@ function download(url, filename){
   var filename = path.basename(url);
   var extension = filename.substring(filename.lastIndexOf("."), filename.lastIndexOf("?"));
   filename = filename.substring(0, filename.indexOf(extension)) + extension;
-  request(url).pipe(fs.createWriteStream("../Wallpapers/" + filename));
+  request(url).pipe(fs.createWriteStream("./Wallpapers/" + filename));
 };
 
 function deleteExisting() {
