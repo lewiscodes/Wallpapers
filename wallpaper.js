@@ -1,12 +1,14 @@
 var request = require('request');
 var fs = require('fs');
-var filePath = "~/Wallpapers/";
+var path = require('path');
+var filePath = "~/";
 var URL = "https://www.reddit.com/r/earthporn/top.json?sort=new&limit100";
 
 function download(url, filename){
-  request.head(url, function(err, res, body){
-    request(url).pipe(fs.createWriteStream(filename));
-  });
+  var filename = path.basename(url);
+  var extension = filename.substring(filename.lastIndexOf("."), filename.lastIndexOf("?"));
+  filename = filename.substring(0, filename.indexOf(extension)) + extension;
+  request(url).pipe(fs.createWriteStream("../Wallpapers/" + filename));
 };
 
 function deleteExisting() {
