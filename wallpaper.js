@@ -1,10 +1,12 @@
 var request = require('request');
 var fs = require('fs');
 var path = require('path');
-var filePath = "~/";
+var filePath = "../../Wallpapers/";
 var URL = "https://www.reddit.com/r/earthporn/top.json?sort=new&limit100";
 
 function download(url, filename){
+  console.log(url);
+  console.log(filename);
   var filename = path.basename(url);
   var extension = filename.substring(filename.lastIndexOf("."), filename.lastIndexOf("?"));
   filename = filename.substring(0, filename.indexOf(extension)) + extension;
@@ -14,13 +16,21 @@ function download(url, filename){
 function deleteExisting() {
   return new Promise (function(resolve, reject) {
     fs.readdir(filePath, function(err, files) {
-      if (files !== undefined) {
+      console.log(files);
+      if (files === undefined || files.length === 0) {
+        return resolve("no files to delete");
+      } else {
+        var x = 0;
         files.forEach(function(file) {
-          fs.unlink(file);
+          fs.unlink(filePath + file, function(err) {
+            x++;
+            if (x === files.length) {
+              return resolve("files deleted");
+            }
+          });
         });
       }
     });
-    return resolve("files deleted");
   });
 }
 
