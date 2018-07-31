@@ -1,23 +1,19 @@
 var request = require('request')
 var fs = require('fs')
 var path = require('path')
-var filePath = require('os').homedir() + '/wallpapers/'
-var URL = 'https://www.reddit.com/r/earthporn/top.json?sort=new&limit100'
+var settings = JSON.parse(fs.readFileSync('./settings.json', 'utf8'))
+var filePath = require('os').homedir() + settings.filepath
+var URL = 'https://www.reddit.com/r/' + settings.subreddit + '/top.json?sort=new&limit100'
 
 function download (url, filename) {
   filename = path.basename(url)
   var extension = filename.substring(filename.lastIndexOf('.'), filename.lastIndexOf('?'))
   filename = filename.substring(0, filename.indexOf(extension)) + extension
-  console.log('filename', filename)
   request(url).pipe(fs.createWriteStream(filePath + filename))
 };
 
 function deleteExisting () {
   return new Promise(function (resolve, reject) {
-    // fs.writeFileSync(filePath + 'test.txt', 'hellooo!!', function (err) {
-    //   if (err) { console.log(err) }
-    // })
-
     fs.readdir(filePath, function (err, files) {
       if (err) {
         console.log(err)
@@ -47,7 +43,7 @@ function callRedditAPI () {
 
     for (var x = 0; x < json.data.children.length; x++) {
       if (json.data.children[x].data.over_18 === false) {
-        if (json.data.children[x].data.preview.images[0].source.width >= 1440 && json.data.children[x].data.preview.images[0].source.height >= 900) {
+        if (json.data.children[x].data.preview.images[0].source.width >= settings.image.minWidth && json.data.children[x].data.preview.images[0].source.height >= settings.image.minHeight) {
           download(json.data.children[x].data.preview.images[0].source.url, filePath + x + '.jpg')
         }
       }
@@ -56,5 +52,5 @@ function callRedditAPI () {
 }
 
 deleteExisting().then(function (success) {
-  callRedditAPI()
+  // callRedditAPI()
 })
